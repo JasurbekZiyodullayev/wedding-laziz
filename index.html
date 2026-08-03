@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="uz">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ismoil & Durdona — 18.05.2026</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Cinzel:wght@400;600&family=EB+Garamond:ital@1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="assets/css/blossom.css" />
+    <!-- Мета-тег для изображения -->
+    <meta property="og:image" content="./assets/images/weddish/seoimage.png" />
+    <!-- Мета-теги для социальных сетей (опционально) -->
+    <meta property="og:title" content="Wedding day" />
+    <meta
+      property="og:description"
+      content="Yuraklarimiz birlashgan bu quvonchli kunda —
+bizning hayotimizdagi eng unutilmas lahzalardan biri bo‘lgan to‘y marosimimizga sizni taklif etamiz. "
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="     Dilyorbek & Madina" />
+    <meta
+      name="twitter:description"
+      content="Yuraklarimiz birlashgan bu quvonchli kunda —
+bizning hayotimizdagi eng unutilmas lahzalardan biri bo‘lgan to‘y marosimimizga sizni taklif etamiz."
+    />
+    <meta name="twitter:image" content="./assets/images/weddish/seoimage.png" />
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="./assets/images/logo.png" />
+  </head>
+  <body>
+    <!-- Falling petals -->
+    <canvas id="petals-canvas"></canvas>
+
+    <!-- Music player -->
+    <audio id="bgMusic" src="./assets/audio/amor.mp3" loop></audio>
+    <button id="music-btn" onclick="toggleMusic()" title="Musiqa">
+      <svg
+        id="music-icon"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="#1a1208"
+        stroke-width="2"
+      >
+        <path
+          d="M9 18V5l12-2v13"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <circle cx="6" cy="18" r="3" stroke-linecap="round" />
+        <circle cx="18" cy="16" r="3" stroke-linecap="round" />
+      </svg>
+    </button>
+
+    <!-- ══════════════ HERO ══════════════ -->
+    <section id="hero">
+      <video id="heroBgVideo" autoplay muted loop playsinline>
+        <source src="./assets/video/banner.mp4" type="video/mp4" />
+      </video>
+      <!-- Decorative SVG ornament -->
+      <svg
+        class="hero-ornament"
+        viewBox="0 0 340 80"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M10 40 Q85 10 170 40 Q255 70 330 40"
+          stroke="#c9a96e"
+          stroke-width="0.8"
+          fill="none"
+          opacity="0.6"
+        />
+        <path
+          d="M10 40 Q85 70 170 40 Q255 10 330 40"
+          stroke="#c9a96e"
+          stroke-width="0.8"
+          fill="none"
+          opacity="0.6"
+        />
+        <circle
+          cx="170"
+          cy="40"
+          r="5"
+          fill="none"
+          stroke="#c9a96e"
+          stroke-width="1"
+        />
+        <circle cx="170" cy="40" r="2" fill="#c9a96e" />
+        <circle cx="10" cy="40" r="2.5" fill="#c9a96e" opacity="0.5" />
+        <circle cx="330" cy="40" r="2.5" fill="#c9a96e" opacity="0.5" />
+        <!-- Mini leaves -->
+        <ellipse
+          cx="100"
+          cy="30"
+          rx="10"
+          ry="4"
+          fill="#c9a96e"
+          opacity="0.2"
+          transform="rotate(-20 100 30)"
+        />
+        <ellipse
+          cx="240"
+          cy="50"
+          rx="10"
+          ry="4"
+          fill="#c9a96e"
+          opacity="0.2"
+          transform="rotate(20 240 50)"
+        />
+      </svg>
+
+      <p class="save-tag">— Save The Date —</p>
+      <h1 class="hero-names">
+        Abdulaziz<span class="hero-ampersand">&</span>Odinaxon
+      </h1>
+
+      <div class="hero-divider"></div>
+
+      <p class="hero-date">23 · Avg · 6</p>
+      <p class="hero-location">Qashqadaryo, O'zbekiston</p>
+
+      <div class="scroll-hint">
+        <div class="scroll-line"></div>
+        <span>SCROLL</span>
+      </div>
+    </section>
+
+    <!-- ══════════════ INVITE ══════════════ -->
+    <section id="invite">
+      <div class="section-inner reveal">
+        <p class="section-label">— Aziz mehmonlar —</p>
+        <h2 class="section-title">Taklifnoma</h2>
+        <div class="gold-line"></div>
+        <p class="invite-text">
+          Sizni to‘y tantanamizga taklif etishdan mamnunmiz! Bu kun — bizning
+          oilalarimiz uchun alohida ahamiyatga ega bo‘lgan muhim sana. Biz bu
+          quvonchli lahzalarni eng yaqin va qadrli insonlar bilan birga
+          nishonlashni istaymiz.
+        </p>
+      </div>
+    </section>
+
+    <!-- ══════════════ COUNTDOWN ══════════════ -->
+    <section id="countdown-sec">
+      <div class="section-inner reveal">
+        <p class="section-label">— To'yga qadar —</p>
+        <h2 class="section-title">Kutamiz</h2>
+        <div class="gold-line"></div>
+        <div class="countdown-wrap">
+          <div class="cd-item">
+            <div class="cd-num" id="cd-days">00</div>
+            <div class="cd-label">Kun</div>
+          </div>
+          <div class="cd-sep">:</div>
+          <div class="cd-item">
+            <div class="cd-num" id="cd-hours">00</div>
+            <div class="cd-label">Soat</div>
+          </div>
+          <div class="cd-sep">:</div>
+          <div class="cd-item">
+            <div class="cd-num" id="cd-minutes">00</div>
+            <div class="cd-label">Daqiqa</div>
+          </div>
+          <div class="cd-sep">:</div>
+          <div class="cd-item">
+            <div class="cd-num" id="cd-seconds">00</div>
+            <div class="cd-label">Soniya</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ DETAILS ══════════════ -->
+    <section id="details">
+      <div class="section-inner">
+        <p class="section-label reveal">— Tafsilotlar —</p>
+        <h2 class="section-title reveal">Ma'lumot</h2>
+        <div class="gold-line reveal"></div>
+        <div class="details-grid">
+          <div class="detail-card reveal">
+            <svg class="card-icon" viewBox="0 0 48 48" fill="none">
+              <rect
+                x="8"
+                y="12"
+                width="32"
+                height="28"
+                rx="3"
+                stroke="#c9a96e"
+                stroke-width="1.5"
+              />
+              <path
+                d="M16 8v8M32 8v8M8 22h32"
+                stroke="#c9a96e"
+                stroke-width="1.5"
+                stroke-linecap="round"
+              />
+              <circle cx="17" cy="32" r="2" fill="#c9a96e" />
+              <circle cx="24" cy="32" r="2" fill="#c9a96e" />
+              <circle cx="31" cy="32" r="2" fill="#c9a96e" />
+            </svg>
+            <p class="card-title">Sana</p>
+            <p class="card-main">23 Avgust</p>
+            <p class="card-sub">2026 · Yakshanba</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════════ FOOTER ══════════════ -->
+    <footer>
+      <div class="footer-names">Abdulaziz & Odinaxon</div>
+      <p class="footer-tagline">23 · 08 · 2026 — Qashqadaryo</p>
+      <div class="footer-divider"></div>
+      <p class="footer-small">© 2026 · BARCHA HUQUQLAR HIMOYALANGAN</p>
+    </footer>
+
+    <script src="assets/js/blossom.js"></script>
+  </body>
+</html>
