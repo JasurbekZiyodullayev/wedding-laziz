@@ -119,7 +119,9 @@
 })();
 
 /* ─── MUSIC ─── */
+const MUSIC_STORAGE_KEY = "wedding-music-playing";
 let musicPlaying = false;
+
 function setMusicIcon(isPlaying) {
   document.getElementById("music-icon").innerHTML = isPlaying
     ? `
@@ -131,6 +133,51 @@ function setMusicIcon(isPlaying) {
       <circle cx="18" cy="16" r="3" stroke-linecap="round"/>`;
 }
 
+function saveMusicPreference(isPlaying) {
+  try {
+    localStorage.setItem(MUSIC_STORAGE_KEY, isPlaying ? "1" : "0");
+  } catch (err) {
+    // localStorage may be unavailable in some environments.
+  }
+}
+
+function loadMusicPreference() {
+  try {
+    const value = localStorage.getItem(MUSIC_STORAGE_KEY);
+    return value === null ? null : value === "1";
+  } catch (err) {
+    return null;
+  }
+}
+
+function updateMusicState(isPlaying) {
+  musicPlaying = isPlaying;
+  setMusicIcon(isPlaying);
+  saveMusicPreference(isPlaying);
+}
+
+function playMusic() {
+  const audio = document.getElementById("bgMusic");
+  if (!audio || !audio.src || audio.src === window.location.href) return;
+
+  audio
+    .play()
+    .then(() => {
+      updateMusicState(true);
+    })
+    .catch(() => {
+      // Autoplay may be blocked; user gesture will start it.
+    });
+}
+
+function pauseMusic() {
+  const audio = document.getElementById("bgMusic");
+  if (!audio) return;
+
+  audio.pause();
+  updateMusicState(false);
+}
+
 function toggleMusic() {
   const audio = document.getElementById("bgMusic");
   if (!audio.src || audio.src === window.location.href) {
@@ -139,49 +186,47 @@ function toggleMusic() {
     );
     return;
   }
+
   if (musicPlaying) {
-    audio.pause();
-    setMusicIcon(false);
+    pauseMusic();
   } else {
-    audio
-      .play()
-      .then(() => {
-        musicPlaying = true;
-        setMusicIcon(true);
-      })
-      .catch(() => {
-        // Autoplay may be blocked by browser; keep button usable.
-      });
-    if (!audio.paused) {
-      musicPlaying = true;
-      setMusicIcon(true);
-    }
-  }
-  if (audio.paused) {
-    musicPlaying = false;
+    playMusic();
   }
 }
 
 function tryAutoplayMusic() {
   const audio = document.getElementById("bgMusic");
-  if (!audio) return;
-  if (!audio.src || audio.src === window.location.href) return;
+  if (!audio || !audio.src || audio.src === window.location.href) return;
 
-  audio.addEventListener(
-    "canplaythrough",
-    () => {
-      audio
-        .play()
-        .then(() => {
-          musicPlaying = true;
-          setMusicIcon(true);
-        })
-        .catch(() => {
-          // Ignore autoplay block; user can still use button.
+  const storedPreference = loadMusicPreference();
+  const shouldPlay = storedPreference === null ? true : storedPreference;
+
+  if (shouldPlay) {
+    const wasMuted = audio.muted;
+    audio.muted = true;
+    audio
+      .play()
+      .then(() => {
+        audio.muted = wasMuted;
+        updateMusicState(true);
+      })
+      .catch(() => {
+        audio.muted = wasMuted;
+        const userGestureHandler = () => {
+          if (!musicPlaying) playMusic();
+        };
+        document.addEventListener("click", userGestureHandler, {
+          once: true,
+          passive: true,
         });
-    },
-    { once: true },
-  );
+        document.addEventListener("touchstart", userGestureHandler, {
+          once: true,
+          passive: true,
+        });
+      });
+  } else {
+    updateMusicState(false);
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
