@@ -120,6 +120,17 @@
 
 /* ─── MUSIC ─── */
 let musicPlaying = false;
+function setMusicIcon(isPlaying) {
+  document.getElementById("music-icon").innerHTML = isPlaying
+    ? `
+      <rect x="6" y="4" width="4" height="16" rx="1"/>
+      <rect x="14" y="4" width="4" height="16" rx="1"/>`
+    : `
+      <path d="M9 18V5l12-2v13" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="6" cy="18" r="3" stroke-linecap="round"/>
+      <circle cx="18" cy="16" r="3" stroke-linecap="round"/>`;
+}
+
 function toggleMusic() {
   const audio = document.getElementById("bgMusic");
   if (!audio.src || audio.src === window.location.href) {
@@ -130,18 +141,52 @@ function toggleMusic() {
   }
   if (musicPlaying) {
     audio.pause();
-    document.getElementById("music-icon").innerHTML = `
-      <path d="M9 18V5l12-2v13" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="6" cy="18" r="3" stroke-linecap="round"/>
-      <circle cx="18" cy="16" r="3" stroke-linecap="round"/>`;
+    setMusicIcon(false);
   } else {
-    audio.play().catch(() => {});
-    document.getElementById("music-icon").innerHTML = `
-      <rect x="6" y="4" width="4" height="16" rx="1"/>
-      <rect x="14" y="4" width="4" height="16" rx="1"/>`;
+    audio
+      .play()
+      .then(() => {
+        musicPlaying = true;
+        setMusicIcon(true);
+      })
+      .catch(() => {
+        // Autoplay may be blocked by browser; keep button usable.
+      });
+    if (!audio.paused) {
+      musicPlaying = true;
+      setMusicIcon(true);
+    }
   }
-  musicPlaying = !musicPlaying;
+  if (audio.paused) {
+    musicPlaying = false;
+  }
 }
+
+function tryAutoplayMusic() {
+  const audio = document.getElementById("bgMusic");
+  if (!audio) return;
+  if (!audio.src || audio.src === window.location.href) return;
+
+  audio.addEventListener(
+    "canplaythrough",
+    () => {
+      audio
+        .play()
+        .then(() => {
+          musicPlaying = true;
+          setMusicIcon(true);
+        })
+        .catch(() => {
+          // Ignore autoplay block; user can still use button.
+        });
+    },
+    { once: true },
+  );
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  tryAutoplayMusic();
+});
 
 /* ─── GALLERY LIGHTBOX ─── */
 const galleryImgs = Array.from(document.querySelectorAll(".gallery-item img"));
